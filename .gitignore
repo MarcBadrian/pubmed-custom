@@ -1,0 +1,7 @@
+# Don't track the content of these folders
+
+# dependencies
+node_modules
+
+# production
+dist
