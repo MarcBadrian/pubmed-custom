@@ -3,66 +3,52 @@ import ReactDOM from "react-dom";
 import axios from "axios";
 
 export default function Home() {
-  const [ids, setIds] = useState([]);
-  const [summary, setSummary] = useState({});
-  const [title, setTitle] = useState("");
-  const [pubMedId, setPubMedId] = useState("");
-  const [auths, setAuths] = useState([]);
-
-  const [query, setQuery] = useState("react");
+  const [dbPapers, setDbPapers] = useState([]);
+  const [papers, setPapers] = useState([{}]);
 
   useEffect(() => {
     let ignore = false;
 
-    async function fetchIds() {
-      const result = await axios(
-        "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&retmode=json&term=%28pediatrics%20neoplasms%20genomics%5BMeSH%20Terms%5D%29%20AND%20%28%222019%2F01%2F09%22%5BDate%20-%20MeSH%5D%20%3A%20%223000%22%5BDate%20-%20MeSH%5D%29"
-      );
-      if (!ignore) setIds(result.data.esearchresult.idlist);
+    async function getItems() {
+      fetch("http://localhost:8000/papers")
+        .then(response => response.json())
+        .then(items => setDbPapers(items))
+        .catch(err => console.log(err));
     }
 
-    fetchIds();
-
-    async function fetchSummary() {
-      const id = "31253791";
-      const url =
-        "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&rettype=abstract&id=" +
-        id;
-      const result = await axios(url);
-      const idSummary = result.data.result;
-      if (!ignore) {
-        setTitle(idSummary[id].title);
-        let authors = idSummary[id].authors;
-        let authNames = authors.map(a => a.name);
-        setAuths(authNames);
-        setPubMedId(idSummary[id].articleids[0].value);
-      }
-    }
-
-    fetchSummary();
-
-    console.log(summary);
+    getItems();
 
     return () => {
       ignore = true;
     };
   }, []);
 
+  const listPapers = dbPapers.map(paper => (
+    <>
+      <li key={paper.title}>
+        <b>Title:</b> {paper.title}
+      </li>
+      <li key={paper.pubmed_id}>
+        <b>PubMed ID:</b> {paper.pubmed_id}
+      </li>
+      <li key={paper.authors}>
+        <b>Authors:</b> {paper.authors}
+      </li>
+      <li key={paper.url}>
+        <a href={paper.url}>Link to paper</a>
+      </li>
+      <br />
+    </>
+  ));
+
   return (
     <div>
-      <ul>
-        <li>
-          <b>Title:</b> {title}
-        </li>
-        <li>
-          <b>PubMed Id:</b> {pubMedId}
-        </li>
-        <li>
-          <b>Authors:</b> {auths.join(", ")}
-        </li>
-      </ul>
+      <h1>PubMed Papers Relating to the Following Topics:</h1>
+      <h4>
+        Pediatric cancer genomics • Pediatric precision medicine • MAP3K8 gene
+        fusion • Acute Lymphoblastic Leukemia
+      </h4>
+      <ul>{listPapers}</ul>
     </div>
   );
 }
-
-//    fetch("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&retmode=json&term=%28pediatrics%20neoplasms%20genomics%5BMeSH%20Terms%5D%29%20AND%20%28%222019%2F01%2F09%22%5BDate%20-%20MeSH%5D%20%3A%20%223000%22%5BDate%20-%20MeSH%5D%29")
