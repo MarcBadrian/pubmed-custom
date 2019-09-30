@@ -1,3 +1,5 @@
+// sourced from https://medium.com/@olinations/build-a-crud-template-using-react-bootstrap-express-postgres-9f84cc444438
+
 const getTableData = (req, res, db) => {
   db.select("*")
     .from("papers")
