@@ -60,23 +60,11 @@ const cors = require("cors"); // allows/disallows cross-site communication
 const morgan = require("morgan"); // logs requests
 
 // db Connection w/ Heroku
-// const db = require('knex')({
-//   client: 'pg',
-//   connection: {
-//     connectionString: process.env.DATABASE_URL,
-//     ssl: true,
-//   }
-// });
-
-// db Connection w/ localhost
-let db = require("knex")({
+const db = require("knex")({
   client: "pg",
   connection: {
-    host: "localhost",
-    user: "me",
-    password: "password",
-    database: "pubmed",
-    port: 5432
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
   }
 });
 
@@ -121,6 +109,7 @@ app.put("/papers", cors(), (req, res) => main.putTableData(req, res, db));
 app.delete("/papers", cors(), (req, res) => main.deleteTableData(req, res, db));
 
 // App Server Connection
-app.listen(process.env.PORT || 8000, () => {
-  console.log(`app is running on port ${process.env.PORT || 8000}`);
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log("app is running on port" + port);
 });
