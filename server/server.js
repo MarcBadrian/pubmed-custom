@@ -1,7 +1,6 @@
 const express = require("express");
 const schedule = require("node-schedule");
 const axios = require("axios");
-const cors = require("cors");
 
 const getNewPapers = async db => {
   try {
