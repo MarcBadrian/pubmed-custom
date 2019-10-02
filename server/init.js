@@ -62,7 +62,8 @@ const morgan = require("morgan"); // logs requests
 const db = require("knex")({
   client: "pg",
   connection: {
-    connectionString: process.env.DATABASE_URL,
+    connectionString:
+      "postgres://kbnxgabwydzqkn:656ac57b6871ab7a537e25dcd3e19d22e6d222b2bad0e344752c29114065e636@ec2-174-129-27-158.compute-1.amazonaws.com:5432/d304mqr097lec7",
     ssl: true
   }
 });
@@ -80,7 +81,7 @@ const main = require("./controllers/main");
 const app = express();
 
 // App Middleware
-const whitelist = ["http://localhost:3000"];
+const whitelist = ["https://pubmedcustom-express-server.herokuapp.com/"];
 const corsOptions = {
   origin: function(origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -102,8 +103,9 @@ app.get("/papers", (req, res) => main.getTableData(req, res, db));
 app.post("/papers", (req, res) => main.postTableData(req, res, db));
 app.put("/papers", (req, res) => main.putTableData(req, res, db));
 app.delete("/papers", (req, res) => main.deleteTableData(req, res, db));
-*/
+
 // App Server Connection
 app.listen(process.env.PORT || 8000, () => {
   console.log(`app is running on port ${process.env.PORT || 8000}`);
 });
+*/

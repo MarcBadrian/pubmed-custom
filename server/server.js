@@ -1,6 +1,7 @@
 const express = require("express");
 const schedule = require("node-schedule");
 const axios = require("axios");
+const cors = require("cors");
 
 const getNewPapers = async db => {
   try {
@@ -94,7 +95,10 @@ const main = require("./controllers/main");
 const app = express();
 
 // App Middleware
-const whitelist = ["http://localhost:3000"];
+const whitelist = [
+  "https://pubmedcustom-express-server.herokuapp.com/",
+  "localhost:3000"
+];
 const corsOptions = {
   origin: function(origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -110,11 +114,11 @@ app.use(bodyParser.json());
 app.use(morgan("combined")); // use 'tiny' or 'combined'
 
 // App Routes - Auth
-app.get("/", (req, res) => res.send("hello world"));
-app.get("/papers", (req, res) => main.getTableData(req, res, db));
-app.post("/papers", (req, res) => main.postTableData(req, res, db));
-app.put("/papers", (req, res) => main.putTableData(req, res, db));
-app.delete("/papers", (req, res) => main.deleteTableData(req, res, db));
+app.get("/", cors(), (req, res) => res.send("hello world"));
+app.get("/papers", cors(), (req, res) => main.getTableData(req, res, db));
+app.post("/papers", cors(), (req, res) => main.postTableData(req, res, db));
+app.put("/papers", cors(), (req, res) => main.putTableData(req, res, db));
+app.delete("/papers", cors(), (req, res) => main.deleteTableData(req, res, db));
 
 // App Server Connection
 app.listen(process.env.PORT || 8000, () => {

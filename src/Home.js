@@ -10,7 +10,7 @@ export default function Home() {
     let ignore = false;
 
     async function getItems() {
-      fetch("http://localhost:8000/papers")
+      fetch("https://pubmedcustom-express-server.herokuapp.com/papers")
         .then(response => response.json())
         .then(items => setDbPapers(items))
         .catch(err => console.log(err));
