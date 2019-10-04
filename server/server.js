@@ -82,11 +82,8 @@ const main = require("./controllers/main");
 const app = express();
 
 // App Middleware
-const whitelist = [
-  "https://pubmedcustom-express-server.herokuapp.com/",
-  "localhost:3000"
-];
-const corsOptions = {
+const whitelist = ["https://pubmedcustom-express-server.herokuapp.com/"];
+/*const corsOptions = {
   origin: function(origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
@@ -94,9 +91,9 @@ const corsOptions = {
       callback(new Error("Not allowed by CORS"));
     }
   }
-};
+};*/
 app.use(helmet());
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan("combined")); // use 'tiny' or 'combined'
 
