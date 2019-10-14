@@ -8,6 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js",
     "build": "webpack --mode production",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "serve": "nodemon server.js"
   },
   "repository": {
@@ -19,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/MarcBadrian/pubmed-custom/issues"
   },
-  "homepage": "https://github.com/MarcBadrian/pubmed-custom#readme",
+  "homepage": "https://marcbadrian.github.io/pubmed-custom",
   "devDependencies": {
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.5.4",
